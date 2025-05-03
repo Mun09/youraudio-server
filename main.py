@@ -9,6 +9,14 @@ from starlette.background import BackgroundTask
 
 app = FastAPI()
 
+# Cookie Setup
+with open("/secrets/yt-cookies", "r") as f:
+    cookie_str = f.read()
+
+with open("cookies.txt", "w") as f:
+    f.write(cookie_str)
+
+
 def download_audio_and_thumbnail(url: str, output_dir='downloads') -> tuple:
     os.makedirs(output_dir, exist_ok=True)
     unique_id = str(uuid.uuid4())
@@ -27,6 +35,7 @@ def download_audio_and_thumbnail(url: str, output_dir='downloads') -> tuple:
         ],
         'writethumbnail': True,
         'quiet': True,
+        "cookiefile": "cookies.txt"
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
