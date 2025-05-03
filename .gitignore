@@ -1,1 +1,4 @@
 downloads/*
+.env
+secrets/*
+cookies.txt

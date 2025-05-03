@@ -9,12 +9,21 @@ from starlette.background import BackgroundTask
 
 app = FastAPI()
 
-# Cookie Setup
-with open("/secrets/yt-cookies", "r") as f:
-    cookie_str = f.read()
+# # Cookie Setup
+# try:
+#     with open("/secrets/yt_cookies", "r") as file:
+#         cookie_str = file.read()
+# except FileNotFoundError:
+#     print("The cookie file is missing! Using fallback dummy_cookies.txt...")
+#     try:
+#         with open("./secrets/yt_cookies.txt", "r") as file:
+#             cookie_str = file.read()
+#     except FileNotFoundError:
+#         raise Exception("Neither /secrets/yt_cookies nor dummy_cookies.txt exists!")
 
-with open("cookies.txt", "w") as f:
-    f.write(cookie_str)
+
+# with open("cookies.txt", "w") as f:
+#     f.write(cookie_str)
 
 
 def download_audio_and_thumbnail(url: str, output_dir='downloads') -> tuple:
@@ -35,7 +44,8 @@ def download_audio_and_thumbnail(url: str, output_dir='downloads') -> tuple:
         ],
         'writethumbnail': True,
         'quiet': True,
-        "cookiefile": "cookies.txt"
+        "--cookies-from-browser": "chrome",
+        # "cookiefile": "cookies.txt"
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
